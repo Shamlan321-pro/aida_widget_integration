@@ -1,0 +1,25 @@
+include README.md
+include license.txt
+include INSTALLATION.md
+include TROUBLESHOOTING.md
+include AUTHENTICATION_FIX.md
+include SERVER_DEPLOYMENT_GUIDE.md
+recursive-include aida_widget_integration *.py
+recursive-include aida_widget_integration *.js
+recursive-include aida_widget_integration *.css
+recursive-include aida_widget_integration *.html
+recursive-include aida_widget_integration *.json
+recursive-include aida_widget_integration *.txt
+recursive-include aida_widget_integration *.md
+recursive-include aida_widget_integration/public *
+recursive-include aida_widget_integration/templates *
+recursive-include aida_widget_integration/config *
+recursive-include aida_widget_integration/doctype *
+recursive-include aida_widget_integration/patches *
+recursive-include aida_widget_integration/www *
+include aida_widget_integration/modules.txt
+include aida_widget_integration/patches.txt
+include aida_widget_integration/hooks.py
+include aida_widget_integration/install.py
+include aida_widget_integration/api.py
+include aida_widget_integration/test_widget.py

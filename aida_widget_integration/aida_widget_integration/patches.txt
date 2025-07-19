@@ -1,0 +1,1 @@
+aida_widget_integration.patches.v1_0.create_aida_widget_settings

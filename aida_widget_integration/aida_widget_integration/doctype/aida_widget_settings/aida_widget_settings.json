@@ -1,0 +1,167 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-01-01 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "widget_configuration_section",
+  "widget_enabled",
+  "auto_open",
+  "api_server_url",
+  "column_break_4",
+  "welcome_message",
+  "widget_appearance_section",
+  "widget_position",
+  "widget_theme",
+  "column_break_8",
+  "show_user_avatar",
+  "user_avatar_url",
+  "sound_notifications",
+  "advanced_settings_section",
+  "connection_timeout",
+  "max_retries",
+  "column_break_12",
+  "debug_mode",
+  "conversation_logging"
+ ],
+ "fields": [
+  {
+   "fieldname": "widget_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Widget Configuration"
+  },
+  {
+   "default": "1",
+   "fieldname": "widget_enabled",
+   "fieldtype": "Check",
+   "label": "Enable Widget"
+  },
+  {
+   "default": "0",
+   "fieldname": "auto_open",
+   "fieldtype": "Check",
+   "label": "Auto Open Widget"
+  },
+  {
+   "default": "https://aida.mocxha.com",
+   "fieldname": "api_server_url",
+   "fieldtype": "Data",
+   "label": "API Server URL",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Hello! I'm AIDA, your AI assistant. How can I help you today?",
+   "fieldname": "welcome_message",
+   "fieldtype": "Text",
+   "label": "Welcome Message"
+  },
+  {
+   "fieldname": "widget_appearance_section",
+   "fieldtype": "Section Break",
+   "label": "Widget Appearance"
+  },
+  {
+   "default": "Bottom Right",
+   "fieldname": "widget_position",
+   "fieldtype": "Select",
+   "label": "Widget Position",
+   "options": "Bottom Right\nBottom Left\nTop Right\nTop Left"
+  },
+  {
+   "default": "Default",
+   "fieldname": "widget_theme",
+   "fieldtype": "Select",
+   "label": "Widget Theme",
+   "options": "Default\nDark\nLight\nAuto"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_user_avatar",
+   "fieldtype": "Check",
+   "label": "Show User Avatar"
+  },
+  {
+   "fieldname": "user_avatar_url",
+   "fieldtype": "Data",
+   "label": "User Avatar URL"
+  },
+  {
+   "default": "0",
+   "fieldname": "sound_notifications",
+   "fieldtype": "Check",
+   "label": "Sound Notifications"
+  },
+  {
+   "fieldname": "advanced_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Advanced Settings"
+  },
+  {
+   "default": "30",
+   "fieldname": "connection_timeout",
+   "fieldtype": "Int",
+   "label": "Connection Timeout (seconds)"
+  },
+  {
+   "default": "3",
+   "fieldname": "max_retries",
+   "fieldtype": "Int",
+   "label": "Max Retries"
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "debug_mode",
+   "fieldtype": "Check",
+   "label": "Debug Mode"
+  },
+  {
+   "default": "1",
+   "fieldname": "conversation_logging",
+   "fieldtype": "Check",
+   "label": "Conversation Logging"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Aida Widget Integration",
+ "name": "AIDA Widget Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "All",
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

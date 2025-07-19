@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIDA Widget Test - Mocxha Integration</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .feature h3 {
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        .feature p {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        .instructions h3 {
+            margin-bottom: 1rem;
+        }
+        .instructions ol {
+            line-height: 1.8;
+        }
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+        .note {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid rgba(255, 193, 7, 0.5);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+    </style>
+    
+    <!-- AIDA Widget CSS -->
+    <link rel="stylesheet" href="aida_chat_widget.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AIDA Widget Test</h1>
+        <p class="description">
+            Test the enhanced AIDA chat widget with improved scrolling, credential validation, and mobile responsiveness.
+        </p>
+        
+        <div class="features">
+            <div class="feature">
+                <h3>✅ Enhanced Scrolling</h3>
+                <p>Fixed auto-scroll issues with multiple scroll attempts and forced scrolling behavior.</p>
+            </div>
+            <div class="feature">
+                <h3>🔐 Credential Validation</h3>
+                <p>Shows helpful message when users try to chat without configuring Mocxha settings.</p>
+            </div>
+            <div class="feature">
+                <h3>📱 Mobile Optimized</h3>
+                <p>Improved mobile responsiveness with better keyboard handling and touch targets.</p>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>How to Test:</h3>
+            <ol>
+                <li>Click the floating chat button in the bottom-right corner</li>
+                <li>Try sending a message without configuring settings (you'll see the credential prompt)</li>
+                <li>Click the settings icon to configure your Mocxha credentials</li>
+                <li>Test the chat functionality and observe the improved scrolling</li>
+                <li>On mobile: Test that the input stays visible when keyboard opens</li>
+            </ol>
+        </div>
+        
+        <div class="note">
+            <strong>Note:</strong> Make sure the AIDA API server is running on https://aida.mocxha.com or update the settings accordingly.
+        </div>
+    </div>
+    
+    <!-- AIDA Widget JavaScript -->
+    <script>
+        // Mock frappe object for testing
+        window.frappe = {
+            session: {
+                user: 'test@mocxha.com'
+            },
+            call: function(options) {
+                console.log('Frappe call:', options);
+                
+                // Handle widget settings request
+                if (options.method && options.method.includes('get_settings')) {
+                    setTimeout(() => {
+                        if (options.callback) {
+                            options.callback({
+                                message: {
+                                    widget_enabled: true,
+                                    auto_open: false,
+                                    api_server_url: 'http://127.0.0.1:5000',
+                                    welcome_message: "Hello! I'm AIDA, your AI assistant. How can I help you today?",
+                                    widget_position: 'Bottom Right',
+                                    widget_theme: 'Default'
+                                }
+                            });
+                        }
+                    }, 100);
+                } else {
+                    // Handle chat API calls
+                    setTimeout(() => {
+                        if (options.callback) {
+                            options.callback({
+                                message: {
+                                    response: 'Hello! This is a test response from AIDA. The widget is working correctly with all the new improvements!',
+                                    session_id: 'test-session-' + Date.now()
+                                }
+                            });
+                        }
+                    }, 1000);
+                }
+            }
+        };
+    </script>
+    <script src="aida_chat_widget.js"></script>
+    
+    <script>
+        // Initialize the widget
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.AidaChatWidget) {
+                new AidaChatWidget();
+            }
+        });
+    </script>
+</body>
+</html>

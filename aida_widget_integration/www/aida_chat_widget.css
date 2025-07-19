@@ -1,0 +1,911 @@
+/**
+ * AIDA Chat Widget Styles
+ * Modern, responsive floating chat widget for Mocxha
+ */
+
+/* Floating Button */
+#aida-floating-btn {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
+    border: none;
+    outline: none;
+}
+
+/* Position Classes for Floating Button */
+#aida-floating-btn.aida-position-bottom-right {
+    bottom: 20px;
+    right: 20px;
+}
+
+#aida-floating-btn.aida-position-bottom-left {
+    bottom: 20px;
+    left: 20px;
+}
+
+#aida-floating-btn.aida-position-top-right {
+    top: 20px;
+    right: 20px;
+}
+
+#aida-floating-btn.aida-position-top-left {
+    top: 20px;
+    left: 20px;
+}
+
+#aida-floating-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(79, 70, 229, 0.4);
+}
+
+#aida-floating-btn:active {
+    transform: translateY(0) scale(0.95);
+}
+
+#aida-floating-btn svg {
+    transition: transform 0.3s ease;
+}
+
+#aida-floating-btn:hover svg {
+    transform: scale(1.1);
+}
+
+/* Widget Container */
+#aida-chat-widget {
+    position: fixed;
+    width: 320px;
+    height: 520px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    transform: translateY(100%) scale(0.8);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Position Classes for Widget Container */
+#aida-chat-widget.aida-position-bottom-right {
+    bottom: 20px;
+    right: 20px;
+}
+
+#aida-chat-widget.aida-position-bottom-left {
+    bottom: 20px;
+    left: 20px;
+}
+
+#aida-chat-widget.aida-position-top-right {
+    top: 20px;
+    right: 20px;
+    transform: translateY(-100%) scale(0.8);
+}
+
+#aida-chat-widget.aida-position-top-left {
+    top: 20px;
+    left: 20px;
+    transform: translateY(-100%) scale(0.8);
+}
+
+#aida-chat-widget.aida-position-top-right.aida-widget-open,
+#aida-chat-widget.aida-position-top-left.aida-widget-open {
+    transform: translateY(0) scale(1);
+}
+
+#aida-chat-widget.aida-widget-open {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Widget Header */
+.aida-widget-header {
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+    color: white;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.aida-widget-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.aida-widget-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.aida-control-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+}
+
+.aida-control-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.aida-control-btn:active {
+    transform: scale(0.95);
+}
+
+/* Widget Content */
+.aida-widget-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    touch-action: pan-y; /* Allow only vertical scrolling */
+    overscroll-behavior: contain; /* Prevent scroll chaining */
+}
+
+/* Chat Container */
+.aida-chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.aida-chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scroll-behavior: smooth;
+    min-height: 0; /* Force flex child to respect container height */
+    max-height: calc(100% - 100px); /* Reserve space for input container */
+    touch-action: pan-y; /* Allow only vertical scrolling */
+    overscroll-behavior: contain; /* Prevent scroll chaining */
+}
+
+.aida-chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.aida-chat-messages::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+}
+
+.aida-chat-messages::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.aida-chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Messages */
+.aida-message {
+    display: flex;
+    gap: 12px;
+    max-width: 85%;
+    animation: messageSlideIn 0.3s ease-out;
+}
+
+@keyframes messageSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.aida-message-user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.aida-message-assistant {
+    align-self: flex-start;
+}
+
+.aida-message-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.aida-message-user .aida-message-avatar {
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+    color: white;
+}
+
+.aida-error-avatar {
+    background: #fef2f2 !important;
+    color: #ef4444 !important;
+}
+
+.aida-message-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.aida-message-text {
+    background: #f8fafc;
+    padding: 12px 16px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #334155;
+    word-wrap: break-word;
+    border: 1px solid #e2e8f0;
+}
+
+.aida-message-user .aida-message-text {
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+    color: white;
+    border: none;
+}
+
+.aida-error-text {
+    background: #fef2f2 !important;
+    color: #dc2626 !important;
+    border-color: #fecaca !important;
+}
+
+.aida-message-time {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-left: 4px;
+}
+
+.aida-message-user .aida-message-time {
+    text-align: right;
+    margin-left: 0;
+    margin-right: 4px;
+}
+
+/* Typing Indicator */
+.aida-typing-dots {
+    display: flex;
+    gap: 4px;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+}
+
+.aida-typing-dots span {
+    width: 6px;
+    height: 6px;
+    background: #94a3b8;
+    border-radius: 50%;
+    animation: typingDot 1.4s infinite ease-in-out;
+}
+
+.aida-typing-dots span:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.aida-typing-dots span:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+@keyframes typingDot {
+    0%, 80%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Chat Input */
+.aida-chat-input-container {
+    padding: 20px;
+    border-top: 1px solid #e2e8f0;
+    background: #fafbfc;
+    position: relative;
+    flex-shrink: 0;
+    margin-top: auto;
+    z-index: 1;
+}
+
+.aida-input-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+#aida-chat-input {
+    flex: 1;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: 1.4;
+    resize: none;
+    outline: none;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    background: white;
+    min-height: 20px;
+    max-height: 120px;
+}
+
+#aida-chat-input:focus {
+    border-color: #4F46E5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+#aida-chat-input::placeholder {
+    color: #94a3b8;
+}
+
+.aida-send-btn {
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+    border: none;
+    border-radius: 12px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+    flex-shrink: 0;
+}
+
+.aida-send-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.aida-send-btn:active {
+    transform: translateY(0);
+}
+
+.aida-send-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Settings Panel */
+.aida-settings-panel {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.aida-settings-panel h3 {
+    margin: 0 0 20px 0;
+    color: #1e293b;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.aida-form-group {
+    margin-bottom: 16px;
+}
+
+.aida-form-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: #374151;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.aida-form-group input {
+    width: 100%;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
+    background: white;
+    box-sizing: border-box;
+}
+
+.aida-form-group input:focus {
+    border-color: #4F46E5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.aida-form-group input:read-only {
+    background: #f8fafc;
+    color: #64748b;
+}
+
+.aida-form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.aida-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    outline: none;
+}
+
+.aida-btn-primary {
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+    color: white;
+}
+
+.aida-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.aida-btn-secondary {
+    background: #f8fafc;
+    color: #64748b;
+    border: 2px solid #e2e8f0;
+}
+
+.aida-btn-secondary:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.aida-btn:active {
+    transform: translateY(0);
+}
+
+/* Message Formatting */
+.aida-message-text strong {
+    font-weight: 600;
+}
+
+.aida-message-text em {
+    font-style: italic;
+}
+
+.aida-message-text code {
+    background: rgba(0, 0, 0, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 13px;
+}
+
+.aida-message-user .aida-message-text code {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.aida-message-text pre {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 12px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 8px 0;
+}
+
+.aida-message-text pre code {
+    background: none;
+    padding: 0;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.aida-message-user .aida-message-text pre {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    #aida-chat-widget {
+        width: calc(100vw - 20px);
+        height: calc(100vh - 40px);
+        right: 10px;
+        bottom: 10px;
+        border-radius: 12px;
+        max-height: calc(100vh - 40px);
+    }
+    
+    #aida-floating-btn {
+        right: 15px;
+        bottom: 15px;
+        width: 56px;
+        height: 56px;
+        z-index: 9999;
+    }
+    
+    .aida-widget-header {
+        padding: 14px 16px;
+        border-radius: 12px 12px 0 0;
+        flex-shrink: 0;
+    }
+    
+    .aida-widget-title {
+        font-size: 15px;
+    }
+    
+    .aida-chat-messages {
+        padding: 16px;
+        gap: 14px;
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        height: 0; /* Force flex child to respect container height */
+        touch-action: pan-y; /* Allow only vertical scrolling */
+        overscroll-behavior: contain; /* Prevent scroll chaining */
+    }
+    
+    .aida-message {
+        max-width: 90%;
+    }
+    
+    .aida-chat-input-container {
+        padding: 12px 16px;
+        flex-shrink: 0;
+        position: relative;
+        background: white;
+        border-top: 1px solid #e2e8f0;
+    }
+    
+    #aida-chat-input {
+        min-height: 40px;
+        max-height: 80px;
+        resize: none;
+    }
+    
+    .aida-settings-panel {
+        padding: 16px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media (max-width: 360px) {
+    .aida-message {
+        max-width: 95%;
+    }
+    
+    .aida-message-text {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+    
+    #aida-chat-input {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+}
+
+/* Additional mobile improvements */
+@media (max-width: 768px) {
+    /* Ensure widget is always visible on mobile */
+    #aida-chat-widget {
+        position: fixed !important;
+        z-index: 10000 !important;
+        width: calc(100vw - 40px) !important;
+        height: calc(100vh - 40px) !important;
+        max-width: 320px;
+        max-height: 520px;
+    }
+    
+    /* Prevent zoom on input focus */
+    #aida-chat-input {
+        font-size: 16px !important;
+        transform-origin: left top;
+    }
+    
+    /* Better touch targets */
+    .aida-control-btn {
+        min-width: 44px;
+        min-height: 44px;
+        width: 44px;
+        height: 44px;
+    }
+    
+    #aida-send-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    /* Improve scrolling performance */
+    .aida-chat-messages {
+        transform: translateZ(0);
+        will-change: scroll-position;
+    }
+    
+    /* Handle keyboard appearance */
+    .aida-chat-input-container {
+        position: relative;
+    }
+}
+
+/* Medium screen adjustments */
+@media (max-width: 1024px) and (min-width: 769px) {
+    #aida-chat-widget {
+        width: 300px;
+        height: 500px;
+    }
+}
+
+/* Landscape mobile adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+    #aida-chat-widget {
+        height: calc(100vh - 20px);
+        max-height: calc(100vh - 20px);
+    }
+}
+
+/* Test Connection Styles */
+.aida-test-btn {
+    background: #4F46E5;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 8px;
+    transition: background-color 0.2s;
+}
+
+.aida-test-btn:hover:not(:disabled) {
+    background: #4338CA;
+}
+
+.aida-test-btn:disabled {
+    background: #9CA3AF;
+    cursor: not-allowed;
+}
+
+.aida-connection-status {
+    margin-top: 8px;
+    font-size: 12px;
+    min-height: 20px;
+}
+
+.aida-status-loading {
+    color: #6B7280;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.aida-status-success {
+    color: #10B981;
+    font-weight: 500;
+}
+
+.aida-status-error {
+    color: #EF4444;
+    font-weight: 500;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Dark mode support (if Mocxha has dark theme) */
+@media (prefers-color-scheme: dark) {
+    #aida-chat-widget {
+        background: #1e293b;
+        border-color: #334155;
+    }
+    
+    .aida-chat-input-container {
+        background: #0f172a;
+        border-color: #334155;
+    }
+    
+    #aida-chat-input {
+        background: #1e293b;
+        border-color: #475569;
+        color: #e2e8f0;
+    }
+    
+    #aida-chat-input::placeholder {
+        color: #64748b;
+    }
+    
+    .aida-message-text {
+        background: #334155;
+        color: #e2e8f0;
+        border-color: #475569;
+    }
+    
+    .aida-message-time {
+        color: #64748b;
+    }
+    
+    .aida-settings-panel {
+        background: #1e293b;
+    }
+    
+    .aida-settings-panel h3 {
+        color: #e2e8f0;
+    }
+    
+    .aida-form-group label {
+        color: #cbd5e1;
+    }
+    
+    .aida-form-group input {
+        background: #334155;
+        border-color: #475569;
+        color: #e2e8f0;
+    }
+    
+    .aida-form-group input:read-only {
+        background: #1e293b;
+        color: #64748b;
+    }
+    
+    .aida-btn-secondary {
+        background: #334155;
+        color: #cbd5e1;
+        border-color: #475569;
+    }
+    
+    .aida-btn-secondary:hover {
+        background: #475569;
+    }
+}
+
+/* Markdown Table Styles */
+.aida-markdown-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 13px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.aida-markdown-table th,
+.aida-markdown-table td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.aida-markdown-table th {
+    background: #f8fafc;
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.aida-markdown-table tr:last-child td {
+    border-bottom: none;
+}
+
+.aida-markdown-table tr:hover {
+    background: #f9fafb;
+}
+
+/* Button Styles for AI Responses */
+.aida-message-text button {
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 4px 8px 4px 0;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
+    display: inline-block;
+}
+
+.aida-message-text button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    background: linear-gradient(135deg, #4338CA 0%, #6D28D9 100%);
+}
+
+.aida-message-text button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
+}
+
+/* Link Styles for AI Responses */
+.aida-message-text a {
+    color: #4F46E5;
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.aida-message-text a:hover {
+    color: #4338CA;
+    border-bottom-color: #4338CA;
+}
+
+/* Dark mode support for new elements */
+@media (prefers-color-scheme: dark) {
+    .aida-markdown-table {
+        background: #334155;
+        color: #e2e8f0;
+    }
+    
+    .aida-markdown-table th {
+        background: #1e293b;
+        color: #cbd5e1;
+        border-bottom-color: #475569;
+    }
+    
+    .aida-markdown-table th,
+    .aida-markdown-table td {
+        border-bottom-color: #475569;
+    }
+    
+    .aida-markdown-table tr:hover {
+        background: #475569;
+    }
+    
+    .aida-message-text a {
+        color: #818CF8;
+    }
+    
+    .aida-message-text a:hover {
+        color: #A5B4FC;
+        border-bottom-color: #A5B4FC;
+    }
+}

@@ -1,0 +1,265 @@
+# AIDA Widget Integration
+
+A modern, responsive floating chat widget for Mocxha that integrates with the AIDA AI Assistant. This Frappe app provides seamless access to AIDA's capabilities directly within your Mocxha interface.
+
+## Features
+
+- **Floating Chat Widget**: Modern, responsive design that doesn't interfere with Mocxha workflow
+- **Session Management**: Persistent chat sessions based on user hash (URL + username)
+- **Cross-Domain Support**: Works across multiple Mocxha instances while connecting to a single AIDA API server
+- **Configurable Settings**: Customizable positioning, themes, and behavior
+- **Auto-Sync**: Chat history syncs between the widget and main Web UI
+- **Secure Integration**: Uses Frappe's built-in authentication and API framework
+
+## Installation
+
+### Prerequisites
+
+1. Mocxha site with Frappe framework
+2. AIDA API server running (typically on port 5000)
+3. Bench setup for app installation
+
+### Install the App
+
+1. Navigate to your Mocxha bench directory:
+   ```bash
+   cd /path/to/your/bench
+   ```
+
+2. Install the app:
+   ```bash
+   bench get-app aida_widget_integration /path/to/aida_widget_integration
+   bench --site your-site-name install-app aida_widget_integration
+   ```
+
+3. Restart your site:
+   ```bash
+   bench restart
+   ```
+
+## Configuration
+
+### AIDA Widget Settings
+
+After installation, configure the widget by going to:
+**Setup > AIDA Widget Settings**
+
+#### Widget Configuration
+- **Enable Widget**: Turn the widget on/off
+- **Auto Open Widget**: Automatically open widget on page load
+- **API Server URL**: URL of your AIDA API server (default: http://localhost:5000)
+- **Welcome Message**: Custom greeting message for new users
+
+#### Widget Appearance
+- **Widget Position**: Choose from Bottom Right, Bottom Left, Top Right, Top Left
+- **Widget Theme**: Default, Dark, Light, or Auto
+- **Show User Avatar**: Display user avatars in chat
+- **Enable Sound Notifications**: Audio alerts for new messages
+
+#### Advanced Settings
+- **Connection Timeout**: API request timeout in seconds
+- **Max Retries**: Number of retry attempts for failed requests
+- **Debug Mode**: Enable detailed logging
+- **Log Conversations**: Save chat history to server logs
+
+## Usage
+
+### For End Users
+
+1. **Access the Widget**: Look for the floating chat icon in the configured position
+2. **Start Chatting**: Click the icon to open the chat interface
+3. **Settings**: Use the gear icon to configure Mocxha credentials
+4. **Session Persistence**: Your chat history will be saved and restored automatically
+
+### Widget Controls
+
+- **Chat Icon**: Opens/closes the widget
+- **Settings Button**: Configure Mocxha credentials and preferences
+- **Close Button**: Minimizes the widget back to floating icon
+- **Clear History**: Remove all chat history for current user
+
+### Mocxha Credentials
+
+Users need to configure their Mocxha credentials in the widget settings:
+- **Mocxha URL**: Automatically filled with current site URL
+- **Username**: Mocxha username
+- **Password**: Mocxha password
+
+These credentials are stored locally in the browser and used to authenticate API requests to Mocxha.
+
+## API Endpoints
+
+The app provides several API endpoints:
+
+- `aida_widget_integration.api.chat_with_aida`: Main chat interface
+- `aida_widget_integration.api.get_widget_settings`: Retrieve widget configuration
+- `aida_widget_integration.api.save_widget_settings`: Update widget configuration
+- `aida_widget_integration.api.get_user_info`: Get current user information
+- `aida_widget_integration.api.health_check`: Widget health status
+
+## Architecture
+
+### Components
+
+1. **Frontend Widget** (`aida_chat_widget.js`): JavaScript class handling UI and interactions
+2. **Styling** (`aida_chat_widget.css`): Modern, responsive CSS with dark mode support
+3. **Backend API** (`api.py`): Python module bridging widget and AIDA API server
+4. **Settings DocType**: Frappe document for storing configuration
+5. **Installation Scripts**: Automated setup and default configuration
+
+### Data Flow
+
+1. User interacts with widget in Mocxha
+2. Widget calls Frappe API endpoints
+3. Frappe API forwards requests to AIDA API server
+4. AIDA processes request and returns response
+5. Response flows back through Frappe to widget
+6. Widget displays response and updates chat history
+
+### Session Management
+
+User sessions are identified by a hash generated from:
+- Mocxha site URL
+- Username
+
+This ensures users maintain consistent sessions across:
+- Multiple browser sessions
+- Different devices (when using same credentials)
+- Widget and main Web UI
+
+## Customization
+
+### Styling
+
+Modify `public/css/aida_chat_widget.css` to customize:
+- Colors and themes
+- Widget dimensions
+- Animation effects
+- Responsive breakpoints
+
+### Functionality
+
+Extend `public/js/aida_chat_widget.js` to add:
+- Custom message formatting
+- Additional UI controls
+- Integration with other Mocxha features
+- Enhanced error handling
+
+### Backend
+
+Modify `api.py` to:
+- Add custom API endpoints
+- Implement additional security measures
+- Integrate with other systems
+- Add custom logging
+
+## Troubleshooting
+
+### Widget Not Appearing
+- Check if the app is properly installed: `bench --site [site-name] list-apps`
+- Ensure widget is enabled in AIDA Widget Settings
+- Clear browser cache and refresh the page
+- Check browser console for JavaScript errors
+- Verify CSS and JS files are properly loaded
+
+### Connection Issues
+- **Use the Test Connection button** in widget settings to diagnose connectivity
+- Verify AIDA API server is running: `curl http://localhost:5000/health`
+- Check API server URL in widget settings (must include http:// or https://)
+- Test network connectivity between Mocxha and API server
+- Review API server logs for errors
+- Common fixes:
+  - Ensure API server accepts requests from Mocxha domain (CORS)
+  - Check firewall settings
+  - Verify port 5000 is accessible
+
+### Chat Errors (400 Bad Request)
+- This was a common issue that has been **fixed** in the latest version
+- The widget now properly maps parameters for the AIDA API server
+- If you still see 400 errors, check API server logs for specific error details
+- Ensure you're using the latest version of both the widget and API server
+
+### Chat History Not Syncing
+- Verify user hash generation (based on Mocxha URL + username)
+- Check if localStorage is enabled in browser
+- Ensure consistent Mocxha URL format across sessions
+- Clear browser localStorage if needed: `localStorage.clear()`
+
+### Performance Issues
+- Monitor API server response times
+- Check network latency between servers
+- Consider adjusting connection timeout settings
+- Review browser developer tools for bottlenecks
+- Use the connection test feature to measure response times
+
+## Development
+
+### Setup Development Environment
+
+1. Clone the repository
+2. Install in development mode:
+   ```bash
+   bench get-app aida_widget_integration /path/to/development/repo
+   bench --site development-site install-app aida_widget_integration
+   ```
+
+3. Enable developer mode:
+   ```bash
+   bench --site development-site set-config developer_mode 1
+   ```
+
+### Making Changes
+
+1. Modify files in the app directory
+2. Restart bench to reload Python changes:
+   ```bash
+   bench restart
+   ```
+
+3. Clear cache for immediate effect:
+   ```bash
+   bench --site development-site clear-cache
+   ```
+
+### Contributing
+
+This app uses `pre-commit` for code formatting and linting. Please [install pre-commit](https://pre-commit.com/#installation) and enable it for this repository:
+
+```bash
+cd apps/aida_widget_integration
+pre-commit install
+```
+
+Pre-commit is configured to use the following tools for checking and formatting your code:
+
+- ruff
+- eslint
+- prettier
+- pyupgrade
+
+### CI
+
+This app can use GitHub Actions for CI. The following workflows are configured:
+
+- CI: Installs this app and runs unit tests on every push to `develop` branch.
+- Linters: Runs [Frappe Semgrep Rules](https://github.com/frappe/semgrep-rules) and [pip-audit](https://pypi.org/project/pip-audit/) on every pull request.
+
+## Security Considerations
+
+- User credentials are stored in browser local storage
+- API requests use Frappe's built-in authentication
+- CORS policies should be configured on AIDA API server
+- Enable HTTPS in production environments
+- Regular security updates for dependencies
+
+## Support
+
+For issues and feature requests:
+1. Check the troubleshooting section
+2. Review ERPNext error logs
+3. Check AIDA API server logs
+4. Contact system administrator
+
+## License
+
+MIT License - see LICENSE file for details
