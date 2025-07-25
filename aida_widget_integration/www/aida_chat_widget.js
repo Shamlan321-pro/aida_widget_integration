@@ -184,11 +184,17 @@ class AidaChatWidget {
                         <label for="aida-api-url">API Server URL:</label>
                         <input type="text" id="aida-api-url" value="${this.widgetSettings.api_server_url}" readonly>
                         <button type="button" id="aida-test-connection" class="aida-test-btn">Test Connection</button>
+                        <div class="aida-session-controls">
+                            <button type="button" id="aida-connect-session" class="aida-btn aida-btn-primary">Connect</button>
+                            <button type="button" id="aida-disconnect-session-new" class="aida-btn aida-btn-warning">Disconnect</button>
+                        </div>
                         <div id="aida-connection-status" class="aida-connection-status"></div>
+                        <div id="aida-session-status" class="aida-session-status"></div>
                     </div>
                     <div class="aida-form-actions">
                         <button id="aida-save-settings" class="aida-btn aida-btn-primary">Save Settings</button>
                         <button id="aida-clear-history" class="aida-btn aida-btn-secondary">Clear Chat History</button>
+                        <button id="aida-disconnect-session" class="aida-btn aida-btn-warning">Disconnect Session</button>
                     </div>
                 </div>
             </div>
@@ -257,6 +263,21 @@ class AidaChatWidget {
         // Test connection button
         document.getElementById('aida-test-connection').addEventListener('click', () => {
             this.testConnection();
+        });
+        
+        // Connect session button
+        document.getElementById('aida-connect-session').addEventListener('click', () => {
+            this.connectSession();
+        });
+        
+        // Disconnect session button (new)
+        document.getElementById('aida-disconnect-session-new').addEventListener('click', () => {
+            this.disconnectSessionNew();
+        });
+        
+        // Disconnect session button (old)
+        document.getElementById('aida-disconnect-session').addEventListener('click', () => {
+            this.disconnectSession();
         });
     }
 
@@ -776,6 +797,28 @@ class AidaChatWidget {
         );
     }
     
+    disconnectSession() {
+        frappe.confirm(
+            'Are you sure you want to disconnect the current session? This will create a new session when you send your next message.',
+            () => {
+                // Clear current session ID
+                this.sessionId = null;
+                
+                // Remove saved session from localStorage
+                if (this.userHash) {
+                    localStorage.removeItem(`aida_session_id_${this.userHash}`);
+                }
+                
+                frappe.show_alert({
+                    message: 'Session disconnected! A new session will be created when you send your next message.',
+                    indicator: 'green'
+                });
+                
+                console.log('Session disconnected by user');
+            }
+        );
+    }
+    
     async testConnection() {
         const statusDiv = document.getElementById('aida-connection-status');
         const testBtn = document.getElementById('aida-test-connection');
@@ -813,6 +856,107 @@ class AidaChatWidget {
         } finally {
             testBtn.disabled = false;
             testBtn.textContent = 'Test Connection';
+        }
+    }
+
+    disconnectSession() {
+        // Remove sessionId from memory and localStorage
+        this.sessionId = null;
+        if (this.userHash) {
+            localStorage.removeItem(`aida_session_id_${this.userHash}`);
+        }
+        frappe.show_alert({
+            message: 'Disconnected from backend. A new session will be created on next message.',
+            indicator: 'orange'
+        });
+    }
+    
+    async connectSession() {
+        const statusDiv = document.getElementById('aida-session-status');
+        const connectBtn = document.getElementById('aida-connect-session');
+        
+        // Show loading state
+        connectBtn.disabled = true;
+        connectBtn.textContent = 'Connecting...';
+        statusDiv.innerHTML = '<span class="aida-status-loading">Initializing session...</span>';
+        
+        try {
+            // Check if we already have a session
+            if (this.sessionId) {
+                statusDiv.innerHTML = '<span class="aida-status-success">✓ Already connected</span>';
+                return;
+            }
+            
+            // Initialize a new session
+            await this.initializeSession();
+            
+            statusDiv.innerHTML = `<span class="aida-status-success">✓ Connected (Session: ${this.sessionId.substring(0, 8)}...)</span>`;
+            
+            frappe.show_alert({
+                message: 'Session connected successfully!',
+                indicator: 'green'
+            });
+            
+        } catch (error) {
+            statusDiv.innerHTML = `<span class="aida-status-error">✗ Connection failed: ${error.message}</span>`;
+            
+            frappe.show_alert({
+                message: 'Failed to connect session: ' + error.message,
+                indicator: 'red'
+            });
+        } finally {
+            connectBtn.disabled = false;
+            connectBtn.textContent = 'Connect';
+        }
+    }
+    
+    disconnectSessionNew() {
+        const statusDiv = document.getElementById('aida-session-status');
+        const disconnectBtn = document.getElementById('aida-disconnect-session-new');
+        
+        // Check if there's a session to disconnect
+        if (!this.sessionId) {
+            statusDiv.innerHTML = '<span class="aida-status-info">No active session to disconnect</span>';
+            frappe.show_alert({
+                message: 'No active session found',
+                indicator: 'orange'
+            });
+            return;
+        }
+        
+        // Show loading state
+        disconnectBtn.disabled = true;
+        disconnectBtn.textContent = 'Disconnecting...';
+        statusDiv.innerHTML = '<span class="aida-status-loading">Disconnecting session...</span>';
+        
+        try {
+            // Clear current session ID
+            this.sessionId = null;
+            
+            // Remove saved session from localStorage
+            if (this.userHash) {
+                localStorage.removeItem(`aida_session_id_${this.userHash}`);
+            }
+            
+            statusDiv.innerHTML = '<span class="aida-status-info">Disconnected</span>';
+            
+            frappe.show_alert({
+                message: 'Session disconnected successfully!',
+                indicator: 'green'
+            });
+            
+            console.log('Session disconnected by user');
+            
+        } catch (error) {
+            statusDiv.innerHTML = `<span class="aida-status-error">✗ Disconnect failed: ${error.message}</span>`;
+            
+            frappe.show_alert({
+                message: 'Failed to disconnect session: ' + error.message,
+                indicator: 'red'
+            });
+        } finally {
+            disconnectBtn.disabled = false;
+            disconnectBtn.textContent = 'Disconnect';
         }
     }
 }
